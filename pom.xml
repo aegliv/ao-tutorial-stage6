@@ -50,13 +50,7 @@
             <groupId>com.atlassian.plugin</groupId>
             <artifactId>atlassian-spring-scanner-annotation</artifactId>
             <version>${atlassian.spring.scanner.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.atlassian.plugin</groupId>
-            <artifactId>atlassian-spring-scanner-runtime</artifactId>
-            <version>${atlassian.spring.scanner.version}</version>
-            <scope>runtime</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -67,16 +61,16 @@
 
         <!-- WIRED TEST RUNNER DEPENDENCIES -->
         <!--<dependency>-->
-            <!--<groupId>com.atlassian.plugins</groupId>-->
-            <!--<artifactId>atlassian-plugins-osgi-testrunner</artifactId>-->
-            <!--<version>${plugin.testrunner.version}</version>-->
-            <!--<scope>test</scope>-->
+        <!--<groupId>com.atlassian.plugins</groupId>-->
+        <!--<artifactId>atlassian-plugins-osgi-testrunner</artifactId>-->
+        <!--<version>${plugin.testrunner.version}</version>-->
+        <!--<scope>test</scope>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>javax.ws.rs</groupId>-->
-            <!--<artifactId>jsr311-api</artifactId>-->
-            <!--<version>1.1.1</version>-->
-            <!--<scope>provided</scope>-->
+        <!--<groupId>javax.ws.rs</groupId>-->
+        <!--<artifactId>jsr311-api</artifactId>-->
+        <!--<version>1.1.1</version>-->
+        <!--<scope>provided</scope>-->
         <!--</dependency>-->
         <!--<dependency>-->
         <!--<groupId>com.google.code.gson</groupId>-->
@@ -119,7 +113,11 @@
                         <!-- Add package to export here -->
                         <Export-Package>com.atlassian.tutorial.ao.todo.api,</Export-Package>
                         <!-- Add package import here -->
-                        <Import-Package>org.springframework.osgi.*;resolution:="optional", org.eclipse.gemini.blueprint.*;resolution:="optional", *</Import-Package>
+                        <Import-Package>
+                            org.springframework.osgi.*;resolution:="optional",
+                            org.eclipse.gemini.blueprint.*;resolution:="optional",
+                            *
+                        </Import-Package>
                         <!-- Ensure plugin is spring powered -->
                         <Spring-Context>*</Spring-Context>
                     </instructions>
@@ -135,16 +133,13 @@
                         <goals>
                             <goal>atlassian-spring-scanner</goal>
                         </goals>
+                        <!-- process-classes seems to be skipped if you are using scala
+                                       so perhaps use prepare-package -->
                         <phase>process-classes</phase>
                     </execution>
                 </executions>
                 <configuration>
-                    <scannedDependencies>
-                        <dependency>
-                            <groupId>com.atlassian.plugin</groupId>
-                            <artifactId>atlassian-spring-scanner-external-jar</artifactId>
-                        </dependency>
-                    </scannedDependencies>
+                    <!-- Enable this to get build-time logging of annotations atlassian-spring-scanner-maven-plugin has noticed -->
                     <verbose>false</verbose>
                 </configuration>
             </plugin>

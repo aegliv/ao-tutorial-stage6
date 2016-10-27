@@ -18,9 +18,6 @@
 <!-- 		<decription>Processes @Transactional annotations.</decription> -->
 <!-- 	</component> -->
 
- 	<!--<component key="todo-service" name="Todo Service"-->
- 		<!--class="com.atlassian.tutorial.ao.todo.TodoServiceImpl" />-->
-
 	<!-- add our i18n resource -->
 	<resource type="i18n" name="i18n" location="ao-tutorial" />
 

@@ -1,9 +1,7 @@
 package com.atlassian.tutorial.ao.todo;
 
-import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
 import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.user.UserManager;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -13,15 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-
-@Scanned //@Named("TodoServlet")
 @Component
 public final class TodoServlet extends HttpServlet
 {
     private final TodoService todoService;
     private final UserManager userManager;
 
-    @Autowired
     public TodoServlet(TodoService todoService, @ComponentImport UserManager userManager)
     {
         this.todoService = todoService;
