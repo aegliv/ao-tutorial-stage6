@@ -1,6 +1,10 @@
 package com.atlassian.tutorial.ao.todo;
 
+import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
+import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
 import com.atlassian.sal.api.user.UserManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,17 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static com.google.common.base.Preconditions.*;
 
+@Scanned //@Named("TodoServlet")
+@Component
 public final class TodoServlet extends HttpServlet
 {
     private final TodoService todoService;
     private final UserManager userManager;
 
-    public TodoServlet(TodoService todoService, UserManager userManager)
+    @Autowired
+    public TodoServlet(TodoService todoService, @ComponentImport UserManager userManager)
     {
-        this.todoService = checkNotNull(todoService);
-        this.userManager = checkNotNull(userManager);
+        this.todoService = todoService;
+        this.userManager = userManager;
     }
 
     @Override
@@ -42,7 +48,7 @@ public final class TodoServlet extends HttpServlet
         for (Todo todo : todoService.all())
         {
             w.printf("<li><%2$s> %s </%2$s></li>", todo.getDescription(), todo.isComplete() ? "strike" : "strong");
-        }
+    }
 
         w.write("</ol>");
         w.write("<script language='javascript'>document.forms[0].elements[0].focus();</script>");

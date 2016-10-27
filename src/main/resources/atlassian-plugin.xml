@@ -1,37 +1,42 @@
-<atlassian-plugin key="com.atlassian.tutorial.ao.todo" name="${project.name}" plugins-version="2">
-    <plugin-info>
-        <description>${project.description}</description>
-        <version>${project.version}</version>
-        <vendor name="${project.organization.name}" url="${project.organization.url}"/>
-    </plugin-info>
+<atlassian-plugin key="${atlassian.plugin.key}" name="${project.name}"
+	plugins-version="2">
+	<plugin-info>
+		<description>${project.description}</description>
+		<version>${project.version}</version>
+		<vendor name="${project.organization.name}" url="${project.organization.url}" />
+		<param name="plugin-icon">images/pluginIcon.png</param>
+		<param name="plugin-logo">images/pluginLogo.png</param>
+	</plugin-info>
 
-    <ao key="ao-module">
-        <description>The module configuring the Active Objects service used by this plugin</description>
-        <entity>com.atlassian.tutorial.ao.todo.Todo</entity>
-        <entity>com.atlassian.tutorial.ao.todo.User</entity>
+	<ao key="ao-module">
+		<description>The module configuring the Active Objects service used by this plugin </description>
+		<entity>com.atlassian.tutorial.ao.todo.Todo</entity>
+	</ao>
 
-        <upgradeTask>com.atlassian.tutorial.ao.todo.upgrade.v1.TodoUpgradeTask001</upgradeTask>
-        <upgradeTask>com.atlassian.tutorial.ao.todo.upgrade.v2.TodoUpgradeTask002</upgradeTask>
-    </ao>
+<!-- 	<component key="tx-processor" name="Transactional Annotation Processor" -->
+<!-- 		class="com.atlassian.activeobjects.external.TransactionalAnnotationProcessor"> -->
+<!-- 		<decription>Processes @Transactional annotations.</decription> -->
+<!-- 	</component> -->
 
-    <component-import key="ao" name="Active Objects service"
-                      interface="com.atlassian.activeobjects.external.ActiveObjects">
-        <description>Component to access Active Objects functionality from the plugin</description>
-    </component-import>
+ 	<!--<component key="todo-service" name="Todo Service"-->
+ 		<!--class="com.atlassian.tutorial.ao.todo.TodoServiceImpl" />-->
 
-    <component-import key="user-manager" name="SAL User Manager" interface="com.atlassian.sal.api.user.UserManager">
-        <description>The SAL user manager</description>
-    </component-import>
+	<!-- add our i18n resource -->
+	<resource type="i18n" name="i18n" location="ao-tutorial" />
 
-    <component key="tx-processor" name="Transactional Annotation Processor"
-               class="com.atlassian.activeobjects.external.TransactionalAnnotationProcessor">
-        <decription>Processes @Transactional annotations.</decription>
-    </component>
+	<!-- add our web resources -->
+	<web-resource key="ao-tutorial-resources" name="ao-tutorial Web Resources">
+		<dependency>com.atlassian.auiplugin:ajs</dependency>
 
-    <component key="todo-service" name="Todo Service" class="com.atlassian.tutorial.ao.todo.TodoServiceImpl"/>
+		<resource type="download" name="ao-tutorial.css" location="/css/ao-tutorial.css" />
+		<resource type="download" name="ao-tutorial.js" location="/js/ao-tutorial.js" />
+		<resource type="download" name="images/" location="/images" />
 
-    <servlet name="Todo List &amp; Add Servlet" class="com.atlassian.tutorial.ao.todo.TodoServlet" key="todo-list">
-        <description>A servlet to add and list todos</description>
-        <url-pattern>/todo/list</url-pattern>
-    </servlet>
+		<context>ao-tutorial</context>
+	</web-resource>
+	<servlet name="Todo List &amp; Add Servlet" class="com.atlassian.tutorial.ao.todo.TodoServlet"
+		key="todo-list">
+		<description>A servlet to add and list todos</description>
+		<url-pattern>/todo/list</url-pattern>
+	</servlet>
 </atlassian-plugin>

@@ -1,66 +1,37 @@
 package com.atlassian.tutorial.ao.todo;
 
 import com.atlassian.activeobjects.external.ActiveObjects;
-import com.atlassian.sal.api.user.UserManager;
-import com.google.common.collect.ImmutableMap;
-import net.java.ao.Query;
+import com.atlassian.plugin.spring.scanner.annotation.component.Scanned;
+import com.atlassian.plugin.spring.scanner.annotation.imports.ComponentImport;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.*;
-import static com.google.common.collect.Lists.*;
-
-public final class TodoServiceImpl implements TodoService
-{
+//@Named("TodoService")
+@Scanned
+@Component
+public class TodoServiceImpl implements TodoService {
     private final ActiveObjects ao;
-    private final UserManager userManager;
 
-    public TodoServiceImpl(ActiveObjects ao, UserManager userManager)
-    {
-        this.ao = checkNotNull(ao);
-        this.userManager = checkNotNull(userManager);
+    @Autowired
+    public TodoServiceImpl(@ComponentImport ActiveObjects ao) {
+        this.ao = ao;
     }
 
-    @Override
-    public Todo add(String description)
-    {
-        final Todo todo = ao.create(Todo.class, ImmutableMap.<String, Object>of("USER_ID", currentUser()));
+    public Todo add(String description) {
+        final Todo todo = ao.create(Todo.class);
         todo.setDescription(description);
         todo.setComplete(false);
         todo.save();
         return todo;
     }
 
-    @Override
-    public List<Todo> all()
-    {
-        return newArrayList(ao.find(Todo.class, Query.select().where("USER_ID = ?", currentUser())));
-    }
-
-    private User currentUser()
-    {
-        return getOrCreateUser(userManager.getRemoteUsername());
-    }
-
-    private User getOrCreateUser(String userName)
-    {
-        User[] users = ao.find(User.class, Query.select().where("NAME = ?", userName));
-        if (users.length == 0)
-        {
-            return createUser(userName);
-        }
-        else if (users.length == 1)
-        {
-            return users[0];
-        }
-        else
-        {
-            throw new IllegalStateException("Found multiple users for username: " + userName);
-        }
-    }
-
-    private User createUser(String userName)
-    {
-        return ao.create(User.class, ImmutableMap.<String, Object>of("NAME", userName));
+    public List<Todo> all() {
+        Todo[] elements = ao.find(Todo.class);
+        if (elements == null || elements.length == 0) return Collections.emptyList();
+        return Arrays.asList(elements);
     }
 }
