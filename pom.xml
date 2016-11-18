@@ -165,7 +165,7 @@
         <plugin.testrunner.version>1.2.3</plugin.testrunner.version>
         <spring.version>4.1.6.RELEASE</spring.version>
         <!-- See https://bitbucket.org/atlassian/atlassian-spring-scanner -->
-        <atlassian.spring.scanner.version>1.2.6</atlassian.spring.scanner.version>
+        <atlassian.spring.scanner.version>2.0.0</atlassian.spring.scanner.version>
         <!--Determined by JEE compliant container-->
         <servlet.version>3.1.0</servlet.version>
     </properties>
